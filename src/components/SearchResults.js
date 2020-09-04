@@ -30,7 +30,7 @@ export default (props) => {
 
   let renderResults = () => props.results.map((result) => (
     <ListItem dense className={ listItemClasses.root }>
-      <img class='search-image' src={ result.image } style={{ flexBasis: '50px', marginRight: '10px' }}></img>
+      <img src={ result.image } style={{ flexBasis: '50px', marginRight: '10px' }}></img>
       <ListItemText primary={ result.title } secondary={ result.year } className={ listItemTextClasses.root } primaryTypographyProps={{ className: listItemTextClasses.primary }} secondaryTypographyProps={{ className: listItemTextClasses.secondary }}/>
       <IconButton className={ iconButtonClasses.root }>
         <AddIcon/>
