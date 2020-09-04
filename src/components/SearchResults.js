@@ -7,8 +7,6 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-const superagent = require('superagent');
-
 const listItemStyles = makeStyles({
   root: {
     display: 'flex',
