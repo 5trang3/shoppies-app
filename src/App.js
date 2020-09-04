@@ -37,7 +37,7 @@ class App extends React.Component {
   render() {
     return (
       <Container>
-        <SearchBar value={ this.state.search } onChange={ (newSearch) => this.setState({ search: newSearch }, () => this.fetchSearchResults()) }/>
+        <SearchBar value={ this.state.search } onChange={ (newSearch) => this.setState({ search: newSearch }, () => this.fetchSearchResults()) } onCancelSearch={ () => this.setState({ search: '' })}/>
         <SearchResults results={ this.state.results }/>
       </Container>
     )
