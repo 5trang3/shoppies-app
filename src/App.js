@@ -33,18 +33,35 @@ class App extends React.Component {
               .then((results) => results.map((result) => ({
                 title: result.Title,
                 year: result.Year,
-                image: result.Poster
+                image: result.Poster,
+                id: result.imdbID
               })))
               .then((parsedResults) => this.setState({
                 results: parsedResults
               }))
   }
 
+  isNominated = (result) => this.state.nominations.map(nomination => nomination.id).includes(result.id)
+
+  limitReached = () => this.state.nominations.length >= 5;
+
+  addMovie = (result) => {
+    if (!this.limitReached() && !this.isNominated(result)) {
+      this.setState(state => {
+        const nominations = [...state.nominations];
+        nominations.push(result);
+        return {
+          nominations: nominations
+        }
+      })
+    }
+  }
+
   render() {
     return (
       <Container>
         <SearchBar value={ this.state.search } onChange={ (newSearch) => this.setState({ search: newSearch }) } onCancelSearch={ () => this.setState({ search: '' })}/>
-        <SearchResults results={ this.state.results }/>
+        <SearchResults results={ this.state.results } addMovie={ this.addMovie }/>
       </Container>
     )
   }

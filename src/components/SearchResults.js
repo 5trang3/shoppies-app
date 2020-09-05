@@ -32,8 +32,8 @@ export default (props) => {
     <ListItem dense className={ listItemClasses.root }>
       <img src={ result.image } style={{ flexBasis: '50px', marginRight: '10px' }}></img>
       <ListItemText primary={ result.title } secondary={ result.year } className={ listItemTextClasses.root } primaryTypographyProps={{ className: listItemTextClasses.primary }} secondaryTypographyProps={{ className: listItemTextClasses.secondary }}/>
-      <IconButton className={ iconButtonClasses.root }>
-        <AddIcon/>
+      <IconButton className={ iconButtonClasses.root } onClick={ () => props.addMovie(result) }>
+        <AddIcon />
       </IconButton>
     </ListItem>
   ))
