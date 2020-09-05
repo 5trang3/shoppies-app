@@ -35,7 +35,7 @@ class App extends React.Component {
               .then((results) => results.map((result) => ({
                 title: result.Title,
                 year: result.Year,
-                image: result.Poster,
+                image: result.Poster === 'N/A' ? 'https://dummyimage.com/300x450&text=No+Image+Available' : result.Poster,
                 id: result.imdbID
               })))
               .then((parsedResults) => this.setState({
