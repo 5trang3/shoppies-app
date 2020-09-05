@@ -69,7 +69,7 @@ class App extends React.Component {
     return (
       <Container>
         <SearchBar value={ this.state.search } onChange={ (newSearch) => this.setState({ search: newSearch }) } onCancelSearch={ () => this.setState({ search: '' })}/>
-        <SearchResults results={ this.state.results } addMovie={ this.addMovie }/>
+        <SearchResults results={ this.state.results } addMovie={ this.addMovie } isNominated={ this.isNominated }/>
         <NominatedMoviesDisplay nominatedMovies={ this.state.nominations } removeMovie={ this.removeMovie }/>
       </Container>
     )
