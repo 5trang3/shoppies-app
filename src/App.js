@@ -3,6 +3,7 @@ import Container from '@material-ui/core/Container'
 import SearchBar from 'material-ui-search-bar'
 import SearchResults from './components/SearchResults.js'
 import NominatedMoviesDisplay from './components/NominatedMoviesDisplay.js'
+import CustomBanner from './components/CustomBanner.js'
 
 const superagent = require('superagent');
 
@@ -68,6 +69,7 @@ class App extends React.Component {
   render() {
     return (
       <Container>
+        <CustomBanner limitReached={ this.limitReached }/>
         <SearchBar value={ this.state.search } onChange={ (newSearch) => this.setState({ search: newSearch }) } onCancelSearch={ () => this.setState({ search: '' })}/>
         <SearchResults results={ this.state.results } addMovie={ this.addMovie } isNominated={ this.isNominated }/>
         <NominatedMoviesDisplay nominatedMovies={ this.state.nominations } removeMovie={ this.removeMovie }/>
