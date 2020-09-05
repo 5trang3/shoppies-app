@@ -58,12 +58,19 @@ class App extends React.Component {
     }
   }
 
+  removeMovie = (result) => {
+    const nominations = this.state.nominations.filter(nominatedMovie => nominatedMovie.id !== result.id)
+    this.setState({
+      nominations: nominations
+    })
+  }
+
   render() {
     return (
       <Container>
         <SearchBar value={ this.state.search } onChange={ (newSearch) => this.setState({ search: newSearch }) } onCancelSearch={ () => this.setState({ search: '' })}/>
         <SearchResults results={ this.state.results } addMovie={ this.addMovie }/>
-        <NominatedMoviesDisplay nominatedMovies={ this.state.nominations } />
+        <NominatedMoviesDisplay nominatedMovies={ this.state.nominations } removeMovie={ this.removeMovie }/>
       </Container>
     )
   }
