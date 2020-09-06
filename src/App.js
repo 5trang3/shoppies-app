@@ -15,13 +15,17 @@ class App extends React.Component {
       search: '',
       movies: {},
       searchResults: [],
-      nominations: []
+      nominations: [],
+      active: []
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.search !== prevState.search) {
       this.fetchMovies()
+    };
+    if (this.state.active[0] !== prevState.active[0] && this.state.active[0].length !== 0) {
+      this.fetchMovieDetails(this.state.active[0])
     }
   }
 
@@ -77,12 +81,34 @@ class App extends React.Component {
     return { nominations: updatedNominations }
   })
 
+  fetchMovieDetails = (id) => {
+    if (!this.state.movies[id].details) {
+      superagent.get('http://www.omdbapi.com')
+      .query({
+        i: id,
+        apikey: process.env.REACT_APP_OMDB_API_KEY,
+        plot: 'full'
+      })
+      .then(res => {
+        const movies = this.state.movies;
+        movies[id].plot = res.body.Plot;
+        movies[id].rating = res.body.imdbRating;
+        movies[id].cast = res.body.Actors;
+        movies[id].awards = res.body.Awards
+        this.setState({ movies: movies });
+      })
+    }
+  }
+
+  setActive = (id) => this.setState({ active: [id] })
+
   render() {
     return (
       <Container>
         <CustomBanner limitReached={ this.limitReached }/>
         <SearchBar value={ this.state.search } onChange={ (newSearch) => this.setState({ search: newSearch }) } onCancelSearch={ () => this.setState({ search: '' })}/>
-        <SearchResults results={ this.state.searchResults } movies={ this.state.movies } addMovie={ this.addMovie } isNominated={ this.isNominated }/>
+        <SearchResults results={ this.state.searchResults } movies={ this.state.movies } addMovie={ this.addMovie } isNominated={ this.isNominated } setActive={ this.setActive }/>
+        <SearchResultDetails movies={ this.state.movies } active={ this.state.active }/>
         <NominatedMoviesDisplay nominations={ this.state.nominations } movies={ this.state.movies } removeMovie={ this.removeMovie }/>
       </Container>
     )

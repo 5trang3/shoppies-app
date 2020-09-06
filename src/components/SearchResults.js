@@ -30,7 +30,7 @@ export default (props) => {
 
   let renderResults = () => {
     return props.results.map(id => (
-      <ListItem dense className={ listItemClasses.root }>
+      <ListItem dense className={ listItemClasses.root } onMouseEnter={ () => props.setActive(id) } onMouseLeave={ () => props.setActive([]) }>
         <img src={ props.movies[id].image } style={{ flexBasis: '50px', marginRight: '10px' }}></img>
         <ListItemText primary={ props.movies[id].title } secondary={ props.movies[id].year } className={ listItemTextClasses.root } primaryTypographyProps={{ className: listItemTextClasses.primary }} secondaryTypographyProps={{ className: listItemTextClasses.secondary }}/>
         <IconButton className={ iconButtonClasses.root } onClick={ () => props.addMovie(id) } disabled={ props.isNominated(id) }>
