@@ -29,11 +29,10 @@ export default (props) => {
   const iconButtonClasses = iconButtonStyles();
 
   let renderResults = () => {
-    const ids = Object.keys(props.results);
-    return ids.map(id => (
+    return props.results.map(id => (
       <ListItem dense className={ listItemClasses.root }>
-        <img src={ props.results[id].image } style={{ flexBasis: '50px', marginRight: '10px' }}></img>
-        <ListItemText primary={ props.results[id].title } secondary={ props.results[id].year } className={ listItemTextClasses.root } primaryTypographyProps={{ className: listItemTextClasses.primary }} secondaryTypographyProps={{ className: listItemTextClasses.secondary }}/>
+        <img src={ props.movies[id].image } style={{ flexBasis: '50px', marginRight: '10px' }}></img>
+        <ListItemText primary={ props.movies[id].title } secondary={ props.movies[id].year } className={ listItemTextClasses.root } primaryTypographyProps={{ className: listItemTextClasses.primary }} secondaryTypographyProps={{ className: listItemTextClasses.secondary }}/>
         <IconButton className={ iconButtonClasses.root } onClick={ () => props.addMovie(id) } disabled={ props.isNominated(id) }>
           <AddIcon />
         </IconButton>

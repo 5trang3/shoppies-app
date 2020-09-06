@@ -13,56 +13,68 @@ class App extends React.Component {
     super(props);
     this.state = {
       search: '',
-      results: {},
-      nominations: {}
+      movies: {},
+      searchResults: [],
+      nominations: []
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.search !== prevState.search) {
-      this.fetchSearchResults()
+      this.fetchMovies()
     }
   }
 
-  fetchSearchResults = () => {
+  fetchMovies = () => {
     superagent.get('http://www.omdbapi.com')
-              .query({
-                's': this.state.search,
-                'apikey': process.env.REACT_APP_OMDB_API_KEY,
-                'type': 'movie',
-              })
-              .then((res) => res.body.Error ? [] : res.body.Search.slice(0, 5))
-              .then(results => results.reduce((resultsObj, result) => {
-                resultsObj[result.imdbID] = {
-                  title: result.Title,
-                  year: result.Year,
-                  image: result.Poster
-                };
-                return resultsObj
-              }, {}))
-              .then(resultsObj => this.setState({
-                results: resultsObj
-              }))
+    .query({
+      s: this.state.search,
+      apikey: process.env.REACT_APP_OMDB_API_KEY,
+      type: 'movie',
+    })
+    .then(res => {
+      let results = res.body.Error ? [] : res.body.Search.slice(0, 5);
+      const nominations = this.state.nominations;
+      let movies = this.state.movies;
+      for (const id in movies) {
+        if (!nominations.includes(id)) {
+          delete movies[id]
+        }
+      }
+      movies = results.reduce((movies, result) => {
+        movies[result.imdbID] = {
+          title: result.Title,
+          image: result.Poster,
+          year: result.Year
+        }
+        return movies;
+      }, movies);
+      results = results.map(result => result.imdbID)
+      this.setState({
+        movies: movies,
+        searchResults: results
+      })
+    })
   }
 
-  isNominated = (id) => this.state.nominations[id] ? true : false
+  isNominated = (id) => this.state.nominations.includes(id)
 
-  limitReached = () => Object.keys(this.state.nominations).length >= 5;
+  limitReached = () => this.state.nominations.length >= 5;
 
   addMovie = (id) => {
     if (!this.limitReached() && !this.isNominated(id)) {
       this.setState(state => {
         const nominations = state.nominations;
-        nominations[id] = state.results[id];
+        nominations.push(id);
         return { nominations: nominations }
       })
     }
   }
 
   removeMovie = (id) => this.setState(state => {
-    let nominations = state.nominations;
-    delete nominations[id];
-    return { nominations: nominations }
+    const nominations = state.nominations;
+    const updatedNominations = nominations.filter(nomination => nomination !== id);
+    return { nominations: updatedNominations }
   })
 
   render() {
@@ -70,8 +82,8 @@ class App extends React.Component {
       <Container>
         <CustomBanner limitReached={ this.limitReached }/>
         <SearchBar value={ this.state.search } onChange={ (newSearch) => this.setState({ search: newSearch }) } onCancelSearch={ () => this.setState({ search: '' })}/>
-        <SearchResults results={ this.state.results } addMovie={ this.addMovie } isNominated={ this.isNominated }/>
-        <NominatedMoviesDisplay nominatedMovies={ this.state.nominations } removeMovie={ this.removeMovie }/>
+        <SearchResults results={ this.state.searchResults } movies={ this.state.movies } addMovie={ this.addMovie } isNominated={ this.isNominated }/>
+        <NominatedMoviesDisplay nominations={ this.state.nominations } movies={ this.state.movies } removeMovie={ this.removeMovie }/>
       </Container>
     )
   }
