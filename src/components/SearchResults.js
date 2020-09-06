@@ -21,12 +21,18 @@ const iconButtonStyles = makeStyles({
   root: {
     flexBasis: '48px',
   }})
-
+const listStyles = makeStyles({
+  root: {
+    flexBasis: '410px',
+    flexShrink: '0'
+  }
+})
 export default (props) => {
 
   const listItemClasses = listItemStyles();
   const listItemTextClasses = listItemTextStyles();
   const iconButtonClasses = iconButtonStyles();
+  const listClasses = listStyles();
 
   let renderResults = () => {
     return props.results.map(id => (
@@ -41,7 +47,7 @@ export default (props) => {
   }
 
   return (
-    <List>
+    <List className={ listClasses.root }>
       { renderResults() }
     </List>
   )

@@ -87,7 +87,7 @@ class App extends React.Component {
       .query({
         i: id,
         apikey: process.env.REACT_APP_OMDB_API_KEY,
-        plot: 'full'
+        plot: 'short'
       })
       .then(res => {
         const movies = this.state.movies;
@@ -107,8 +107,10 @@ class App extends React.Component {
       <Container>
         <CustomBanner limitReached={ this.limitReached }/>
         <SearchBar value={ this.state.search } onChange={ (newSearch) => this.setState({ search: newSearch }) } onCancelSearch={ () => this.setState({ search: '' })}/>
-        <SearchResults results={ this.state.searchResults } movies={ this.state.movies } addMovie={ this.addMovie } isNominated={ this.isNominated } setActive={ this.setActive }/>
-        <SearchResultDetails movies={ this.state.movies } active={ this.state.active }/>
+        <div style={{ display: 'flex', marginTop: '10px', height: '475px' }}>
+          <SearchResults results={ this.state.searchResults } movies={ this.state.movies } addMovie={ this.addMovie } isNominated={ this.isNominated } setActive={ this.setActive }/>
+          <SearchResultDetails movies={ this.state.movies } active={ this.state.active }/>
+        </div>
         <NominatedMoviesDisplay nominations={ this.state.nominations } movies={ this.state.movies } removeMovie={ this.removeMovie }/>
       </Container>
     )
