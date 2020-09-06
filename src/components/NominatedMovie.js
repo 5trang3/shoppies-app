@@ -49,7 +49,7 @@ export default (props) => {
       <div style={{ height: '100px', display: 'flex' }}>
         <CardHeader title={ props.nominatedMovie.title } subheader={ props.nominatedMovie.year } className={ cardHeaderClasses.root } titleTypographyProps={ { variant: 'subtitle2' } }/>
         <CardActions className={ cardActionsClasses.root }>
-        <IconButton onClick={ () => props.removeMovie(props.nominatedMovie)}>
+        <IconButton onClick={ () => props.removeMovie(props.id)}>
           <DeleteIcon/>
         </IconButton>
       </CardActions>

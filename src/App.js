@@ -4,6 +4,7 @@ import SearchBar from 'material-ui-search-bar'
 import SearchResults from './components/SearchResults.js'
 import NominatedMoviesDisplay from './components/NominatedMoviesDisplay.js'
 import CustomBanner from './components/CustomBanner.js'
+import SearchResultDetails from './components/SearchResultDetails.js'
 
 const superagent = require('superagent');
 
@@ -12,8 +13,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       search: '',
-      results: [],
-      nominations: []
+      results: {},
+      nominations: {}
     }
   }
 
@@ -29,42 +30,40 @@ class App extends React.Component {
                 's': this.state.search,
                 'apikey': process.env.REACT_APP_OMDB_API_KEY,
                 'type': 'movie',
-                'plot': 'short'
               })
               .then((res) => res.body.Error ? [] : res.body.Search.slice(0, 5))
-              .then((results) => results.map((result) => ({
-                title: result.Title,
-                year: result.Year,
-                image: result.Poster === 'N/A' ? 'https://dummyimage.com/300x450&text=No+Image+Available' : result.Poster,
-                id: result.imdbID
-              })))
-              .then((parsedResults) => this.setState({
-                results: parsedResults
+              .then(results => results.reduce((resultsObj, result) => {
+                resultsObj[result.imdbID] = {
+                  title: result.Title,
+                  year: result.Year,
+                  image: result.Poster
+                };
+                return resultsObj
+              }, {}))
+              .then(resultsObj => this.setState({
+                results: resultsObj
               }))
   }
 
-  isNominated = (result) => this.state.nominations.map(nomination => nomination.id).includes(result.id)
+  isNominated = (id) => this.state.nominations[id] ? true : false
 
-  limitReached = () => this.state.nominations.length >= 5;
+  limitReached = () => Object.keys(this.state.nominations).length >= 5;
 
-  addMovie = (result) => {
-    if (!this.limitReached() && !this.isNominated(result)) {
+  addMovie = (id) => {
+    if (!this.limitReached() && !this.isNominated(id)) {
       this.setState(state => {
-        const nominations = [...state.nominations];
-        nominations.push(result);
-        return {
-          nominations: nominations
-        }
+        const nominations = state.nominations;
+        nominations[id] = state.results[id];
+        return { nominations: nominations }
       })
     }
   }
 
-  removeMovie = (result) => {
-    const nominations = this.state.nominations.filter(nominatedMovie => nominatedMovie.id !== result.id)
-    this.setState({
-      nominations: nominations
-    })
-  }
+  removeMovie = (id) => this.setState(state => {
+    let nominations = state.nominations;
+    delete nominations[id];
+    return { nominations: nominations }
+  })
 
   render() {
     return (

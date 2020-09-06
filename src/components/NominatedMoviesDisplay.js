@@ -3,7 +3,10 @@ import NominatedMovie from './NominatedMovie.js'
 
 export default (props) => {
 
-  let renderNominatedMovies = (nominatedMovies) => nominatedMovies.map(nominatedMovie => <NominatedMovie nominatedMovie={ nominatedMovie } removeMovie={ props.removeMovie }/>)
+  let renderNominatedMovies = (nominatedMovies) => {
+    const ids = Object.keys(nominatedMovies);
+    return ids.map(id => <NominatedMovie nominatedMovie={ nominatedMovies[id] } removeMovie={ props.removeMovie } id={ id }/>)
+  }
   const style = {
     display: 'flex',
     flexWrap: 'wrap',

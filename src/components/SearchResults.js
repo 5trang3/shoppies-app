@@ -28,15 +28,18 @@ export default (props) => {
   const listItemTextClasses = listItemTextStyles();
   const iconButtonClasses = iconButtonStyles();
 
-  let renderResults = () => props.results.map((result) => (
-    <ListItem dense className={ listItemClasses.root }>
-      <img src={ result.image } style={{ flexBasis: '50px', marginRight: '10px' }}></img>
-      <ListItemText primary={ result.title } secondary={ result.year } className={ listItemTextClasses.root } primaryTypographyProps={{ className: listItemTextClasses.primary }} secondaryTypographyProps={{ className: listItemTextClasses.secondary }}/>
-      <IconButton className={ iconButtonClasses.root } onClick={ () => props.addMovie(result) } disabled={ props.isNominated(result) }>
-        <AddIcon />
-      </IconButton>
-    </ListItem>
-  ))
+  let renderResults = () => {
+    const ids = Object.keys(props.results);
+    return ids.map(id => (
+      <ListItem dense className={ listItemClasses.root }>
+        <img src={ props.results[id].image } style={{ flexBasis: '50px', marginRight: '10px' }}></img>
+        <ListItemText primary={ props.results[id].title } secondary={ props.results[id].year } className={ listItemTextClasses.root } primaryTypographyProps={{ className: listItemTextClasses.primary }} secondaryTypographyProps={{ className: listItemTextClasses.secondary }}/>
+        <IconButton className={ iconButtonClasses.root } onClick={ () => props.addMovie(id) } disabled={ props.isNominated(id) }>
+          <AddIcon />
+        </IconButton>
+      </ListItem>
+    ))
+  }
 
   return (
     <List>
