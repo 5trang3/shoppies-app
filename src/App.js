@@ -107,7 +107,7 @@ class App extends React.Component {
       <Container>
         <CustomBanner limitReached={ this.limitReached }/>
         <SearchBar value={ this.state.search } onChange={ (newSearch) => this.setState({ search: newSearch }) } onCancelSearch={ () => this.setState({ search: '' })}/>
-        <div style={{ display: 'flex', marginTop: '10px', height: '475px' }}>
+        <div style={{ display: 'flex', marginTop: '10px' }}>
           <SearchResults results={ this.state.searchResults } movies={ this.state.movies } addMovie={ this.addMovie } isNominated={ this.isNominated } setActive={ this.setActive }/>
           <SearchResultDetails movies={ this.state.movies } active={ this.state.active }/>
         </div>

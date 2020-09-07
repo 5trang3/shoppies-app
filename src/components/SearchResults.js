@@ -11,11 +11,13 @@ const listItemStyles = makeStyles({
   root: {
     display: 'flex',
     alignItems: 'flex-start',
+    padding: '3px'
   }})
 const listItemTextStyles = makeStyles({
   root: {
-    flexBasis: '300px',
-    flexGrow: '0'
+    flexBasis: '150px',
+    flexGrow: '0',
+    margin: '0'
   }})
 const iconButtonStyles = makeStyles({
   root: {
@@ -23,7 +25,7 @@ const iconButtonStyles = makeStyles({
   }})
 const listStyles = makeStyles({
   root: {
-    flexBasis: '410px',
+    flexBasis: '250px',
     flexShrink: '0'
   }
 })
@@ -37,7 +39,7 @@ export default (props) => {
   let renderResults = () => {
     return props.results.map(id => (
       <ListItem dense className={ listItemClasses.root } onMouseEnter={ () => props.setActive(id) } onMouseLeave={ () => props.setActive([]) }>
-        <img src={ props.movies[id].image } style={{ flexBasis: '50px', marginRight: '10px' }}></img>
+        <img src={ props.movies[id].image } style={{ width: '50px', marginRight: '10px' }}></img>
         <ListItemText primary={ props.movies[id].title } secondary={ props.movies[id].year } className={ listItemTextClasses.root } primaryTypographyProps={{ className: listItemTextClasses.primary }} secondaryTypographyProps={{ className: listItemTextClasses.secondary }}/>
         <IconButton className={ iconButtonClasses.root } onClick={ () => props.addMovie(id) } disabled={ props.isNominated(id) }>
           <AddIcon />
