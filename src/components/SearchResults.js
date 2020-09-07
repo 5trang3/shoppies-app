@@ -26,7 +26,8 @@ const iconButtonStyles = makeStyles({
 const listStyles = makeStyles({
   root: {
     flexBasis: '250px',
-    flexShrink: '0'
+    flexShrink: '0',
+    marginRight: '5px'
   }
 })
 export default (props) => {
