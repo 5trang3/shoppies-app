@@ -21,6 +21,7 @@
     "superagent": "^6.1.0"
   },
   "scripts": {
+    "dev": "react-scripts start",
     "start": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
