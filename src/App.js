@@ -83,7 +83,7 @@ class App extends React.Component {
 
   fetchMovieDetails = (id) => {
     if (!this.state.movies[id].details) {
-      superagent.get('http://www.omdbapi.com')
+      superagent.get('https://www.omdbapi.com')
       .query({
         i: id,
         apikey: process.env.REACT_APP_OMDB_API_KEY,
