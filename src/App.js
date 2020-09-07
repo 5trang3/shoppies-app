@@ -30,7 +30,7 @@ class App extends React.Component {
   }
 
   fetchMovies = () => {
-    superagent.get('http://www.omdbapi.com')
+    superagent.get('https://www.omdbapi.com')
     .query({
       s: this.state.search,
       apikey: process.env.REACT_APP_OMDB_API_KEY,
