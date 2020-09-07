@@ -7,54 +7,45 @@ import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 
-const cardStyles = makeStyles({
+const cardStyles = makeStyles(theme => ({
   root: {
-    margin: '5px',
-    height: '450px',
-
-  }
-})
-const cardMediaStyles = makeStyles({
+    flexBasis: '240px',
+    margin: '0 5px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      flexBasis: 'auto',
+      margin: '5px 0'
+    }
+  }}))
+const cardMediaStyles = makeStyles(theme => ({
   root: {
-    height: '350px',
-    width: '235px'
-  }
-})
-const cardHeaderStyles = makeStyles({
-  root: {
-    width: '165px',
-    padding: '10px',
-    paddingRight: '0',
-    alignItems: 'flex-start'
-  },
-})
-const cardActionsStyles = makeStyles({
-  root: {
-    width: '50px',
-    padding: '5px',
-    alignItems: 'flex-start'
-  }
-})
+    height: '0px',
+    paddingTop: '150%',
+  }}))
 
 export default (props) => {
 
   const cardClasses = cardStyles();
   const cardMediaClasses = cardMediaStyles();
-  const cardHeaderClasses = cardHeaderStyles();
-  const cardActionsClasses = cardActionsStyles();
+
+  const theme = useTheme();
+  const isSmallBreakpoint = useMediaQuery(theme.breakpoints.down('sm'))
+
+  const renderButtonIcon = (<IconButton onClick={ () => props.removeMovie(props.id)}>
+                            <DeleteIcon fontSize='small'/>
+                            </IconButton>)
+  const renderImage = isSmallBreakpoint ? null : <CardMedia image={ props.nominatedMovie.image } className={ cardMediaClasses.root }/>
+
   return (
     <Card className={ cardClasses.root }>
-      <div style={{ height: '100px', display: 'flex' }}>
-        <CardHeader title={ props.nominatedMovie.title } subheader={ props.nominatedMovie.year } className={ cardHeaderClasses.root } titleTypographyProps={ { variant: 'subtitle2' } }/>
-        <CardActions className={ cardActionsClasses.root }>
-        <IconButton onClick={ () => props.removeMovie(props.id)}>
-          <DeleteIcon/>
-        </IconButton>
-      </CardActions>
-      </div>
-      <CardMedia image={ props.nominatedMovie.image } className={ cardMediaClasses.root }/>
+        <CardHeader title={ props.nominatedMovie.title } subheader={ props.nominatedMovie.year } titleTypographyProps={ { variant: 'subtitle2' } } action={ renderButtonIcon }/>
+      { renderImage }
     </Card>
   )
 }
