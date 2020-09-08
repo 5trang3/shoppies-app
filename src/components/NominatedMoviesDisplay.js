@@ -5,7 +5,7 @@ import '../styles/NominatedMoviesDisplay.css'
 export default (props) => {
 
   let renderNominatedMovies = () => {
-    return props.nominations.map(id => <NominatedMovie nominatedMovie={ props.movies[id] } removeMovie={ props.removeMovie } id={ id }/>)
+    return props.nominations.map(id => <NominatedMovie nominatedMovie={ props.movies[id] } removeMovie={ props.removeMovie } id={ id } key={ id }/>)
   }
 
   return (
