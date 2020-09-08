@@ -4,6 +4,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
@@ -35,9 +36,11 @@ export default (props) => {
   const theme = useTheme();
   const isSmallBreakpoint = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const renderButtonIcon = (<IconButton onClick={ () => props.removeMovie(props.id)}>
-                            <DeleteIcon fontSize='small'/>
-                            </IconButton>)
+  const renderButtonIcon = (<Tooltip title='Remove from Nominations'>
+                              <IconButton onClick={ () => props.removeMovie(props.id)}>
+                                <DeleteIcon fontSize='small'/>
+                              </IconButton>
+                            </Tooltip>)
   const renderImage = isSmallBreakpoint ? null : <CardMedia image={ props.nominatedMovie.image } className={ cardMediaClasses.root }/>
 
   return (
