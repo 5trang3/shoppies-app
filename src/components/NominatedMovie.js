@@ -33,6 +33,8 @@ export default (props) => {
   const cardClasses = cardStyles();
   const cardMediaClasses = cardMediaStyles();
 
+  const placeholderImage = 'https://dummyimage.com/300x450/000000/ffffff&text=Poster+Not+Available';
+
   const theme = useTheme();
   const isSmallBreakpoint = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -41,7 +43,7 @@ export default (props) => {
                                 <DeleteIcon fontSize='small'/>
                               </IconButton>
                             </Tooltip>)
-  const renderImage = isSmallBreakpoint ? null : <CardMedia image={ props.nominatedMovie.image } className={ cardMediaClasses.root }/>
+  const renderImage = isSmallBreakpoint ? null : <CardMedia image={ props.nominatedMovie.image === 'N/A' ? placeholderImage : props.nominatedMovie.image } className={ cardMediaClasses.root }/>
 
   return (
     <Card className={ cardClasses.root }>

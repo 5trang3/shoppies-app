@@ -38,10 +38,12 @@ export default (props) => {
   const iconButtonClasses = iconButtonStyles();
   const listClasses = listStyles();
 
+  const placeholderImage = 'https://dummyimage.com/300x450/000000/ffffff&text=Poster+Not+Available';
+
   let renderResults = () => {
     return props.results.map(id => (
       <ListItem dense className={ listItemClasses.root } onMouseEnter={ () => props.setActive(id) } onMouseLeave={ () => props.setActive([]) } key={ id }>
-        <img src={ props.movies[id].image } style={{ width: '50px', marginRight: '10px' }} alt={ 'Movie poster for ' + props.movies[id].title }></img>
+        <img src={ props.movies[id].image === 'N/A' ? placeholderImage : props.movies[id].image } style={{ width: '50px', marginRight: '10px' }} alt={ 'Movie poster for ' + props.movies[id].title }></img>
         <ListItemText primary={ props.movies[id].title } secondary={ props.movies[id].year } className={ listItemTextClasses.root } primaryTypographyProps={{ className: listItemTextClasses.primary }} secondaryTypographyProps={{ className: listItemTextClasses.secondary }}/>
         <Tooltip title='Nominate this Movie'>
           <IconButton className={ iconButtonClasses.root } onClick={ () => props.addMovie(id) } disabled={ props.isNominated(id) }>
