@@ -29,35 +29,33 @@ class App extends React.Component {
     }
   }
 
-  fetchMovies = () => {
-    superagent.get('https://www.omdbapi.com')
-    .query({
-      s: this.state.search,
-      apikey: process.env.REACT_APP_OMDB_API_KEY,
-      type: 'movie',
-    })
-    .then(res => {
-      let results = res.body.Error ? [] : res.body.Search.slice(0, 5);
-      const nominations = this.state.nominations;
-      let movies = this.state.movies;
-      for (const id in movies) {
-        if (!nominations.includes(id)) {
-          delete movies[id]
-        }
+  fetchMovies = async () => {
+    let res = await superagent.get('https://www.omdbapi.com')
+                              .query({
+                                s: this.state.search,
+                                apikey: process.env.REACT_APP_OMDB_API_KEY,
+                                type: 'movie',
+                              })
+    let results = res.body.Error ? [] : res.body.Search.slice(0, 5);
+    const nominations = this.state.nominations;
+    let movies = this.state.movies;
+    for (const id in movies) {
+      if (!nominations.includes(id)) {
+        delete movies[id]
       }
-      movies = results.reduce((movies, result) => {
-        movies[result.imdbID] = {
-          title: result.Title,
-          image: result.Poster,
-          year: result.Year
-        }
-        return movies;
-      }, movies);
-      results = results.map(result => result.imdbID)
-      this.setState({
-        movies: movies,
-        searchResults: results
-      })
+    }
+    movies = results.reduce((movies, result) => {
+      movies[result.imdbID] = {
+        title: result.Title,
+        image: result.Poster,
+        year: result.Year
+      }
+      return movies;
+    }, movies);
+    results = results.map(result => result.imdbID)
+    this.setState({
+      movies: movies,
+      searchResults: results
     })
   }
 
@@ -81,22 +79,20 @@ class App extends React.Component {
     return { nominations: updatedNominations }
   })
 
-  fetchMovieDetails = (id) => {
+  fetchMovieDetails = async (id) => {
     if (!this.state.movies[id].details) {
-      superagent.get('https://www.omdbapi.com')
-      .query({
-        i: id,
-        apikey: process.env.REACT_APP_OMDB_API_KEY,
-        plot: 'short'
-      })
-      .then(res => {
-        const movies = this.state.movies;
-        movies[id].plot = res.body.Plot;
-        movies[id].rating = res.body.imdbRating;
-        movies[id].cast = res.body.Actors;
-        movies[id].awards = res.body.Awards
-        this.setState({ movies: movies });
-      })
+      let res = await superagent.get('https://www.omdbapi.com')
+                                .query({
+                                  i: id,
+                                  apikey: process.env.REACT_APP_OMDB_API_KEY,
+                                  plot: 'short'
+                                })
+      const movies = this.state.movies;
+      movies[id].plot = res.body.Plot;
+      movies[id].rating = res.body.imdbRating;
+      movies[id].cast = res.body.Actors;
+      movies[id].awards = res.body.Awards
+      this.setState({ movies: movies });
     }
   }
 
