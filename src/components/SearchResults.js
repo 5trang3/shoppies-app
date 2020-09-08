@@ -4,6 +4,7 @@ import ListItem from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -42,9 +43,11 @@ export default (props) => {
       <ListItem dense className={ listItemClasses.root } onMouseEnter={ () => props.setActive(id) } onMouseLeave={ () => props.setActive([]) } key={ id }>
         <img src={ props.movies[id].image } style={{ width: '50px', marginRight: '10px' }} alt={ 'Movie poster for ' + props.movies[id].title }></img>
         <ListItemText primary={ props.movies[id].title } secondary={ props.movies[id].year } className={ listItemTextClasses.root } primaryTypographyProps={{ className: listItemTextClasses.primary }} secondaryTypographyProps={{ className: listItemTextClasses.secondary }}/>
-        <IconButton className={ iconButtonClasses.root } onClick={ () => props.addMovie(id) } disabled={ props.isNominated(id) }>
-          <AddIcon />
-        </IconButton>
+        <Tooltip title='Nominate this Movie'>
+          <IconButton className={ iconButtonClasses.root } onClick={ () => props.addMovie(id) } disabled={ props.isNominated(id) }>
+            <AddIcon />
+          </IconButton>
+        </Tooltip>
       </ListItem>
     ))
   }
