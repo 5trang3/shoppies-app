@@ -3,7 +3,7 @@ import NominatedMovie from './NominatedMovie.js'
 import '../styles/NominatedMoviesDisplay.css'
 import Typography from '@material-ui/core/Typography'
 
-import { makeStyles } from '@material-ui/core/Styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 const typographyStyles = makeStyles({
   root: {
